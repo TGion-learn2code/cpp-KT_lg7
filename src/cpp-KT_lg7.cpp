@@ -40,25 +40,39 @@ void print (float& number) {
 	cout << number << endl;
 }
 
+/// @brief	checks if a string contains only numbers
+///
+/// @param	text string& string to check for numbers
+/// @return	bool true if string is a number, otherwise false
+///
+bool isNumber(string& number) {
+	for (int i = 0; i < number.length(); ++i) {
+		if (isdigit(number[i]) == false) {
+			return false;
+		}
+	}
+	return true;
+}
+
 /// @brief	reads a number from stdin
 ///
 /// @param	text string& print text to ask user for input
 /// @return	integer read from stdin
 ///
-int readInt (string text) {
-	cout << text;
+bool readInt (string text, int& number) {
+	cout << text;				// tell the user to input (given text)
 
-	int myInt = 0;
+	string userInput;
+	cin >> userInput;			// save user input as string
 
-
-	if (cin >> myInt) {		// integer successfully read
-		return myInt;
+	if (isNumber(userInput)) {		// check if user input is number
+		number = stoi(userInput);	// if successfull return number
+		return true;
 	}
 	else {
-		throw std::invalid_argument("Sie haben keine Integer eingegeben!\n");
+		throw std::invalid_argument("Sie haben keinen Integer eingegeben!");
+		return false;
 	}
-
-	return 0;
 }
 
 int main() {
@@ -73,8 +87,8 @@ int main() {
 	//============================================================================
 	// Aufgabe 1.2
 	//============================================================================
-	int myTestInteger = 5;
-	float myTestFloat = 3.8f;
+	//int myTestInteger = 5;
+	//float myTestFloat = 3.8f;
 
 	//print (myTestInteger);
 	//print (myTestFloat);
@@ -88,14 +102,20 @@ int main() {
 	// Aufgabe 2.2
 	//============================================================================
 	int myAge;
+
+/*	while ( !(readInt("Bitte geben Sie Ihr Alter ein: ", myAge)) ) {
+		cerr << "Sie haben keine Zahl eingegeben!" << endl;
+	}
+*/
+
+
 	while ( true ) {
 		try {
-			myAge = readInt("Bitte geben Sie Ihr Alter ein: ");
+			readInt("Bitte geben Sie Ihr Alter ein: ", myAge);
 			break;
 		}
 		catch (exception &exc) {
-			cerr << exc.what();
-			continue;
+			cerr << exc.what() << endl;
 		}
 	}
 
